@@ -33,9 +33,6 @@ jobs:
           curl -sf -X POST localhost:3000/api/links -H "Content-Type: application/json" -d '{"url":"github.com","alias":"ci-test"}'
           test "$(curl -s -o /dev/null -w '%{http_code}' localhost:3000/ci-test)" = "302"
       - name: Scan de sécurité (Trivy)
-        uses: aquasecurity/trivy-action@0.33.1
-        with:
-          image-ref: shortly:ci
-          severity: CRITICAL
-          ignore-unfixed: true
-          exit-code: "1"
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest \
+            image --severity CRITICAL --ignore-unfixed --exit-code 1 --no-progress shortly:ci
