@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Tests + couverture
+        run: npm test
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build de l'image
+        run: docker build -t shortly:ci .
+      - name: Test de démarrage
+        run: |
+          docker run -d --name shortly -p 3000:3000 shortly:ci
+          for i in $(seq 1 20); do curl -sf http://localhost:3000/health && break; sleep 1; done
+          curl -sf -X POST localhost:3000/api/links -H "Content-Type: application/json" -d '{"url":"github.com","alias":"ci-test"}'
+          test "$(curl -s -o /dev/null -w '%{http_code}' localhost:3000/ci-test)" = "302"
+      - name: Scan de sécurité (Trivy)
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: shortly:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
