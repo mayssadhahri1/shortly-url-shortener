@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shortly — raccourcisseur de liens</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>short<span>ly</span></h1>
+    <p>Des liens courts, des statistiques claires.</p>
+  </header>
+
+  <main>
+    <form id="form" class="card">
+      <input id="url" type="text" placeholder="Collez un lien long : https://…" autocomplete="off" required>
+      <div class="row">
+        <label>Alias (optionnel)
+          <input id="alias" type="text" placeholder="mon-cv">
+        </label>
+        <label>Expire dans
+          <select id="expires">
+            <option value="">jamais</option>
+            <option value="1">1 jour</option>
+            <option value="7">7 jours</option>
+            <option value="30">30 jours</option>
+          </select>
+        </label>
+        <button type="submit">Raccourcir</button>
+      </div>
+      <p id="error" class="error" hidden></p>
+    </form>
+
+    <section id="result" class="card result" hidden>
+      <div>
+        <a id="short" target="_blank" rel="noopener"></a>
+        <p id="long" class="muted"></p>
+        <button id="copy" type="button">Copier</button>
+      </div>
+      <img id="qr" alt="QR code du lien">
+    </section>
+
+    <section class="card">
+      <h2>Derniers liens</h2>
+      <table>
+        <thead><tr><th>Lien court</th><th>Destination</th><th>Clics</th><th></th></tr></thead>
+        <tbody id="links"></tbody>
+      </table>
+      <p id="empty" class="muted">Aucun lien pour l'instant.</p>
+    </section>
+
+    <section id="stats" class="card" hidden>
+      <h2>Statistiques — <span id="stats-slug"></span></h2>
+      <div id="bars" class="bars"></div>
+      <p id="stats-info" class="muted"></p>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
