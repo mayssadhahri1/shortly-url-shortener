@@ -1,0 +1,30 @@
+{
+  "name": "shortly",
+  "version": "1.0.0",
+  "description": "Raccourcisseur d'URL avec statistiques de clics et QR codes (Node.js, Express, SQLite)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest --coverage",
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Mayssa Dhahri",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "13.2.0",
+    "express": "4.22.3",
+    "helmet": "8.3.0",
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "eslint": "9.39.5",
+    "globals": "17.14.0",
+    "jest": "30.5.2",
+    "supertest": "7.3.2"
+  }
+}
